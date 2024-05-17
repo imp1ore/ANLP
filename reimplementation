@@ -1,0 +1,38 @@
+import openai
+
+# OpenAI API Key (Ensure to replace 'your-api-key' with your actual OpenAI API key)
+openai.api_key = 'your-api-key'
+
+def test_ellipsis(model, prompt):
+    """ Function to send prompts to the GPT-3 API and return the response """
+    try:
+        response = openai.Completion.create(
+            engine=model,
+            prompt=prompt,
+            max_tokens=50,
+            n=1,
+            stop=None,
+            temperature=0.7
+        )
+        return response.choices[0].text.strip()
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
+def main():
+    # Example prompts with ellipsis and non-ellipsis versions
+    prompts = [
+        ("William went running. Harold did too. Did Harold go running?", "yes"),
+        ("William went running. Harold went running too. Did Harold go running?", "yes")
+    ]
+    
+    # Specify the model you are using, e.g., 'text-davinci-003'
+    model = 'text-davinci-003'
+
+    # Test each prompt and compare to expected response
+    for prompt, expected in prompts:
+        response = test_ellipsis(model, prompt)
+        print(f"Prompt: {prompt}\nModel Response: {response}\nExpected: {expected}\n")
+
+if _name_ == "_main_":
+    main()
